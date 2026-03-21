@@ -1,0 +1,33 @@
+{
+  "name": "gudangvisa-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Document tracking system",
+  "main": "index.js",
+  "keywords": [],
+  "author": "iqbalzayn01",
+  "license": "ISC",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "dev": "tsx watch src/server.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.5.0",
+    "cors": "^2.8.6",
+    "debug": "~2.6.9",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "http-errors": "~1.6.3",
+    "morgan": "^1.10.1",
+    "prisma": "^7.5.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
