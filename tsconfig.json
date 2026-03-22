@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     /* --- Language & runtime --- */
-    "target": "ES2022",
-    "lib": ["ES2022"],
+    "target": "ES2023",
+    "lib": ["ES2023"],
 
     /* --- Node ESM --- */
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    // "module": "NodeNext",
+    // "moduleResolution": "NodeNext",
 
     /* --- Project structure --- */
     "rootDir": "./src",
@@ -26,6 +28,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "ignoreDeprecations": "6.0",
 
     /* --- Build output --- */
     "sourceMap": true,
