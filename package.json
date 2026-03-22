@@ -9,10 +9,12 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "start": "tsx src/server.ts",
-    "build": "tsc",
     "dev": "tsx watch src/server.ts",
-    "production": "npm run build && node dist/server.js"
+    "build": "tsc",
+    "start": "tsx src/server.ts",
+    "production": "npm run build && node dist/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/adapter-neon": "^7.5.0",
