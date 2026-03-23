@@ -1,6 +1,6 @@
 {
   "name": "gudangvisa-backend",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "Document tracking system",
   "main": "index.js",
@@ -12,19 +12,14 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "tsx src/server.ts",
-    "production": "npm run build && node dist/server.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@prisma/adapter-neon": "^7.5.0",
-    "@prisma/adapter-pg": "^7.5.0",
-    "@prisma/client": "^7.5.0",
     "cors": "^2.8.6",
-    "debug": "~2.6.9",
     "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
-    "http-errors": "~1.6.3",
     "morgan": "^1.10.1",
     "pg": "^8.20.0"
   },
@@ -34,7 +29,7 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.5.0",
     "@types/pg": "^8.20.0",
-    "prisma": "^7.5.0",
+    "drizzle-kit": "^0.31.10",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
