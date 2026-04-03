@@ -1,5 +1,5 @@
 {
-  "id": "b91ec637-a454-4879-af81-88b18c4dac48",
+  "id": "2526d23e-a5b6-469f-a604-ff81dff10f73",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -15,9 +15,9 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "resi_number": {
-          "name": "resi_number",
-          "type": "varchar(255)",
+        "tracking_code": {
+          "name": "tracking_code",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
@@ -27,8 +27,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "type": {
-          "name": "type",
+        "doc_type": {
+          "name": "doc_type",
           "type": "doc_type",
           "typeSchema": "public",
           "primaryKey": false,
@@ -46,16 +46,23 @@
           "name": "file_url",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "staff_id": {
-          "name": "staff_id",
+        "created_by": {
+          "name": "created_by",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -64,12 +71,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "documents_staff_id_users_id_fk": {
-          "name": "documents_staff_id_users_id_fk",
+        "documents_created_by_users_id_fk": {
+          "name": "documents_created_by_users_id_fk",
           "tableFrom": "documents",
           "tableTo": "users",
           "columnsFrom": [
-            "staff_id"
+            "created_by"
           ],
           "columnsTo": [
             "id"
@@ -80,11 +87,11 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "documents_resi_number_unique": {
-          "name": "documents_resi_number_unique",
+        "documents_tracking_code_unique": {
+          "name": "documents_tracking_code_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "resi_number"
+            "tracking_code"
           ]
         }
       },
@@ -116,15 +123,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
+        "notes": {
+          "name": "notes",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "changed_by": {
           "name": "changed_by",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -148,7 +155,20 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tracking_histories_changed_by_users_id_fk": {
+          "name": "tracking_histories_changed_by_users_id_fk",
+          "tableFrom": "tracking_histories",
+          "tableTo": "users",
+          "columnsFrom": [
+            "changed_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
