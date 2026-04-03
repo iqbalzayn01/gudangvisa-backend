@@ -2,13 +2,12 @@ import {
   pgTable,
   text,
   timestamp,
-  uuid,
   pgEnum,
+  uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-// --- ENUMS ---
 export const roleEnum = pgEnum('role', ['STAFF', 'ADMIN']);
 export const docTypeEnum = pgEnum('doc_type', ['VISA', 'KITAS', 'PASSPORT']);
 export const docStatusEnum = pgEnum('doc_status', [
@@ -20,9 +19,8 @@ export const docStatusEnum = pgEnum('doc_status', [
   'COMPLETED',
 ]);
 
-// --- TABLES ---
 export const users = pgTable('users', {
-  id: uuid('id').defaultRandom().primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: text('password').notNull(),
@@ -31,35 +29,31 @@ export const users = pgTable('users', {
 });
 
 export const documents = pgTable('documents', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  resiNumber: varchar('resi_number', { length: 255 }).notNull().unique(),
+  id: uuid('id').primaryKey().defaultRandom(),
+  trackingCode: varchar('tracking_code', { length: 50 }).notNull().unique(),
   clientName: varchar('client_name', { length: 255 }).notNull(),
-  type: docTypeEnum('type').notNull(),
+  docType: docTypeEnum('doc_type').notNull(),
   status: docStatusEnum('status').default('RECEIVED').notNull(),
-  fileUrl: text('file_url').notNull(), // Path file PDF/JPG
-  staffId: uuid('staff_id')
-    .references(() => users.id)
-    .notNull(), // Siapa yang upload
+  fileUrl: text('file_url'),
+  createdBy: uuid('created_by').references(() => users.id),
   createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export const trackingHistories = pgTable('tracking_histories', {
-  id: uuid('id').defaultRandom().primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   documentId: uuid('document_id')
-    .references(() => documents.id, { onDelete: 'cascade' })
+    .references(() => documents.id)
     .notNull(),
   status: docStatusEnum('status').notNull(),
-  description: text('description'),
-  changedBy: varchar('changed_by', { length: 255 }).notNull(), // Nama Staff
+  notes: text('notes'),
+  changedBy: uuid('changed_by')
+    .references(() => users.id)
+    .notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-// --- RELATIONS ---
-export const documentRelations = relations(documents, ({ one, many }) => ({
-  staff: one(users, {
-    fields: [documents.staffId],
-    references: [users.id],
-  }),
+export const documentRelations = relations(documents, ({ many }) => ({
   histories: many(trackingHistories),
 }));
 
@@ -67,5 +61,9 @@ export const historyRelations = relations(trackingHistories, ({ one }) => ({
   document: one(documents, {
     fields: [trackingHistories.documentId],
     references: [documents.id],
+  }),
+  user: one(users, {
+    fields: [trackingHistories.changedBy],
+    references: [users.id],
   }),
 }));
