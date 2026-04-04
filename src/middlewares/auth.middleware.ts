@@ -2,18 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { jwtVerify } from 'jose';
 import { ENV } from '../config/env';
 import { AppError } from '../utils/AppError';
-
-// Mendeklarasikan tipe data User agar TypeScript tidak error saat kita memanggil req.user
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        id: string;
-        role: string;
-      };
-    }
-  }
-}
+import { JwtPayloadData } from '../types';
 
 export const requireAuth = async (
   req: Request,
@@ -21,36 +10,39 @@ export const requireAuth = async (
   next: NextFunction,
 ) => {
   try {
-    // 1. Ambil token dari header 'Authorization: Bearer <token>'
+    // 1. Get the token from the 'Authorization' header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new AppError(
         401,
-        'Anda belum login. Silakan login untuk mendapatkan akses.',
+        'You are not logged in. Please log in to get access.',
       );
     }
 
     const token = authHeader.split(' ')[1];
 
-    // 2. Verifikasi token menggunakan secret key
+    if (!token) {
+      throw new AppError(
+        401,
+        'Token is missing. Please provide a valid token.',
+      );
+    }
+
+    // 2. Verify the token using the secret key
     const secretKey = new TextEncoder().encode(ENV.JWT_SECRET);
     const { payload } = await jwtVerify(token, secretKey);
 
-    // 3. Masukkan payload (id, role) ke dalam object request
+    const decoded = payload as unknown as JwtPayloadData;
+
+    // 3. Attach the user data to the request object
     req.user = {
-      id: payload.id as string,
-      role: payload.role as string,
+      id: decoded.id,
+      role: decoded.role,
     };
 
-    // 4. Lanjut ke proses berikutnya (controller / middleware lain)
+    // 4. Move to the next process (controller)
     next();
   } catch (error) {
-    // Jika token kedaluwarsa atau tidak valid
-    next(
-      new AppError(
-        401,
-        'Token tidak valid atau sudah kedaluwarsa. Silakan login kembali.',
-      ),
-    );
+    next(new AppError(401, 'Invalid or expired token. Please log in again.'));
   }
 };

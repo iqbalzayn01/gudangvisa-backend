@@ -1,39 +1,47 @@
-import express, { Application } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import authRoutes from './modules/auth/auth.routes';
 import trackingRoutes from './modules/tracking/tracking.routes';
+import documentRoutes from './modules/documents/documents.routes';
+import userRoutes from './modules/users/users.routes';
 import { globalErrorHandler } from './middlewares/error.middleware';
 import { AppError } from './utils/AppError';
+import path from 'path';
 import fs from 'fs';
 
 const app: Application = express();
 
-if (!fs.existsSync('src/uploads')) {
-  fs.mkdirSync('src/uploads', { recursive: true });
+const uploadDir = path.join(__dirname, '../public/uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
-
-// Middlewares
+// Global Middlewares
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/tracking', trackingRoutes);
+// Static Files
+app.use('/uploads', express.static(uploadDir));
 
-app.all('*', (req, res, next) => {
-  next(
-    new AppError(
-      404,
-      `Route ${req.originalUrl} tidak ditemukan pada server ini!`,
-    ),
-  );
+// Base Route
+app.get('/', (_req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: 'Gudang Visa API is running 🚀',
+    timestamp: new Date().toISOString(),
+  });
 });
 
-app.get('/', (_req, res) => {
-  res.json({ message: 'Gudangvisa API is running 🚀' });
+// API Routes
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/tracking', trackingRoutes);
+app.use('/api/v1/documents', documentRoutes);
+app.use('/api/v1/users', userRoutes);
+
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+  next(new AppError(404, `Can't find ${req.originalUrl} on this server!`));
 });
 
 app.use(globalErrorHandler);

@@ -8,7 +8,7 @@ export const globalErrorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  // Jika error adalah instance dari AppError (Error yang kita buat sengaja)
+  // If the error is a known AppError (like "Document not found")
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       success: false,
@@ -17,15 +17,14 @@ export const globalErrorHandler = (
     return;
   }
 
-  // Jika error BUKAN dari AppError (Berarti ini Bug, Database down, atau Syntax Error)
-  // Kita log error-nya ke console (atau ke log monitoring seperti Sentry)
-  console.error('💥 UNEXPECTED ERROR:', err);
+  // If the error is unexpected (like a database crash or code bug)
+  console.error('UNEXPECTED ERROR:', err);
 
-  // Jangan pernah membocorkan detail error teknis ke user/client di tahap Production
+  // In production, do not leak technical details to the client
   const message =
     ENV.NODE_ENV === 'development'
       ? err.message
-      : 'Terjadi kesalahan pada server. Silakan coba lagi nanti.';
+      : 'Something went wrong on the server. Please try again later.';
 
   res.status(500).json({
     success: false,

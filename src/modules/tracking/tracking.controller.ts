@@ -1,32 +1,55 @@
 import { Request, Response, NextFunction } from 'express';
 import { TrackingService } from './tracking.service';
+import { ApiResponse } from '../../types';
 
 export class TrackingController {
   private service = new TrackingService();
 
-  trackByCode = async (req: Request, res: Response, next: NextFunction) => {
+  trackByCode = async (
+    req: Request<{ code: string }>,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
       const { code } = req.params;
       const result = await this.service.getTrackingDetails(code);
-      res.status(200).json({ success: true, data: result });
+
+      const response: ApiResponse = {
+        success: true,
+        message: 'Document found',
+        data: result,
+      };
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
   };
 
-  updateStatus = async (req: Request, res: Response, next: NextFunction) => {
+  updateStatus = async (
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
       const { id } = req.params;
       const { status, notes } = req.body;
       const staffId = req.user.id;
 
-      const result = await this.service.processDocumentUpdate(
+      const updatedDoc = await this.service.processDocumentUpdate(
         id,
         status,
         notes,
         staffId,
       );
-      res.status(200).json({ success: true, data: result });
+
+      const response: ApiResponse = {
+        success: true,
+        message: 'Status updated successfully',
+        data: updatedDoc,
+      };
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
