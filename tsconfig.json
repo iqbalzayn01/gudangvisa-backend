@@ -5,9 +5,11 @@
     "lib": ["ES2023"],
 
     /* --- Node ESM --- */
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    // "module": "ESNext",
     // "module": "NodeNext",
+    // "moduleResolution": "bundler",
     // "moduleResolution": "NodeNext",
 
     /* --- Project structure --- */
