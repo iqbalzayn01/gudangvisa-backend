@@ -6,7 +6,7 @@ import { AppError } from '../utils/AppError.js';
  * @param allowedRoles Array of allowed roles (example: ['ADMIN', 'STAFF'])
  */
 export const authorizeRoles = (...allowedRoles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     // Ensure the user is authenticated first
     if (!req.user) {
       return next(new AppError(401, 'Authentication required.'));

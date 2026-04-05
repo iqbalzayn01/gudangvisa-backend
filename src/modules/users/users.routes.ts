@@ -11,6 +11,7 @@ router.use(requireAuth);
 router.use(authorizeRoles('ADMIN'));
 
 // Routes
+router.get('/me', controller.getMe);
 router.post('/', controller.createStaff);
 router.get('/', controller.getAllStaff);
 router.delete('/:id', controller.deleteStaff);

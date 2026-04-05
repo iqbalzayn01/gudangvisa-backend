@@ -41,7 +41,7 @@ app.use('/api/v1/documents', documentRoutes);
 app.use('/api/v1/users', userRoutes);
 
 // 404 Catch-All Route
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((req: Request, _res: Response, next: NextFunction) => {
   next(new AppError(404, `Can't find ${req.originalUrl} on this server!`));
 });
 

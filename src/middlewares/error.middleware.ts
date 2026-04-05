@@ -4,9 +4,9 @@ import { ENV } from '../config/env.js';
 
 export const globalErrorHandler = (
   err: Error | AppError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
   // If the error is a known AppError (like "Document not found")
   if (err instanceof AppError) {

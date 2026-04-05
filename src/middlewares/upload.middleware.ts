@@ -11,10 +11,10 @@ if (!fs.existsSync(uploadDir)) {
 
 // 2. Configure where and how to save the files
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     cb(null, uploadDir); // Save to public/uploads
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     // Create a unique name: fieldname-timestamp-random.extension
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 
 // 3. Filter files by their type (Only allow images and PDFs)
 const fileFilter = (
-  req: any,
+  _req: any,
   file: Express.Multer.File,
   cb: multer.FileFilterCallback,
 ) => {

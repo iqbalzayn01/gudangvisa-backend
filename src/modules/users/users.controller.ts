@@ -1,9 +1,35 @@
 import { Request, Response, NextFunction } from 'express';
 import { UsersService } from './users.service.js';
 import { ApiResponse } from '../../types/index.js';
+import { AppError } from '../../utils/AppError.js';
 
 export class UsersController {
   private service = new UsersService();
+
+  getMe = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userLogged = req.user;
+
+      if (!userLogged) {
+        throw new AppError(401, 'User not found or not logged in.');
+      }
+
+      const response: ApiResponse = {
+        success: true,
+        message: 'User profile retrieved successfully!',
+        data: {
+          id: userLogged.id,
+          name: userLogged.name,
+          email: userLogged.email,
+          role: userLogged.role,
+        },
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   createStaff = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -58,3 +84,40 @@ export class UsersController {
     }
   };
 }
+
+// ------------------------------------------------------
+// export class UsersController {
+//   private service = new UsersService();
+
+//   getMe = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//       const tokenPayload = req.user;
+
+//       if (!tokenPayload) {
+//         throw new AppError(401, 'You are not logged in.');
+//       }
+
+//       const currentUser = await db.query.users.findFirst({
+//         where: eq(users.id, tokenPayload.id),
+//       });
+
+//       if (!currentUser) {
+//         throw new AppError(404, 'User profile no longer exists.');
+//       }
+
+//       const response: ApiResponse = {
+//         success: true,
+//         message: 'User profile retrieved successfully!',
+//         data: {
+//           id: currentUser.id,
+//           name: currentUser.name,
+//           email: currentUser.email,
+//           role: currentUser.role,
+//         },
+//       };
+
+//       res.status(200).json(response);
+//     } catch (error) {
+//       next(error);
+//     }
+//   };

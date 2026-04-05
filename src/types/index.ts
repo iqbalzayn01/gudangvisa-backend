@@ -16,5 +16,7 @@ export interface ApiResponse<T = any> {
  */
 export interface JwtPayloadData {
   id: string;
+  name: string;
+  email: string;
   role: string;
 }
