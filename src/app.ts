@@ -40,7 +40,7 @@ app.use('/api/v1/tracking', trackingRoutes);
 app.use('/api/v1/documents', documentRoutes);
 app.use('/api/v1/users', userRoutes);
 
-// 6. 404 Catch-All Route
+// 404 Catch-All Route
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(new AppError(404, `Can't find ${req.originalUrl} on this server!`));
 });
