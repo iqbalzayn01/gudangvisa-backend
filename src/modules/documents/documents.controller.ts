@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { DocumentService } from './documents.service';
-import { ApiResponse } from '../../types';
+import { DocumentService } from './documents.service.js';
+import { ApiResponse } from '../../types/index.js';
 
 export class DocumentController {
   private documentService = new DocumentService();

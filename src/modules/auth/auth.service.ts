@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 import { SignJWT } from 'jose';
-import { AuthRepository } from './auth.repository';
-import { ENV } from '../../config/env';
-import { JwtPayloadData } from '../../types';
-import { AppError } from '../../utils/AppError';
+import { AuthRepository } from './auth.repository.js';
+import { ENV } from '../../config/env.js';
+import { JwtPayloadData } from '../../types/index.js';
+import { AppError } from '../../utils/AppError.js';
 
 export class AuthService {
   private repository = new AuthRepository();

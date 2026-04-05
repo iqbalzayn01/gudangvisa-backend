@@ -1,10 +1,10 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import { AppError } from '../utils/AppError';
+import { AppError } from '../utils/AppError.js';
 
 // 1. Ensure the upload directory exists
-const uploadDir = path.join(__dirname, '../../public/uploads');
+const uploadDir = path.join(process.cwd(), 'public/uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

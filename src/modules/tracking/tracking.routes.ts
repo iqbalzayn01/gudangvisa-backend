@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { TrackingController } from './tracking.controller';
-import { requireAuth } from '../../middlewares/auth.middleware';
+import { TrackingController } from './tracking.controller.js';
+import { requireAuth } from '../../middlewares/auth.middleware.js';
 
 const router = Router();
 const controller = new TrackingController();

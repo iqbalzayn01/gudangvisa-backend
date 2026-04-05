@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { DocumentController } from './documents.controller';
-import { requireAuth } from '../../middlewares/auth.middleware';
-import { authorizeRoles } from '../../middlewares/role.middleware';
-import { uploadMiddleware } from '../../middlewares/upload.middleware';
+import { DocumentController } from './documents.controller.js';
+import { requireAuth } from '../../middlewares/auth.middleware.js';
+import { authorizeRoles } from '../../middlewares/role.middleware.js';
+import { uploadMiddleware } from '../../middlewares/upload.middleware.js';
 
 const router = Router();
 const controller = new DocumentController();

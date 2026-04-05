@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { UsersService } from './users.service';
-import { ApiResponse } from '../../types';
+import { UsersService } from './users.service.js';
+import { ApiResponse } from '../../types/index.js';
 
 export class UsersController {
   private service = new UsersService();

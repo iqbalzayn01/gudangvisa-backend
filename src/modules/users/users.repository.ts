@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
-import { db } from '../../db';
-import { users } from '../../db/schema';
-import { AppError } from '../../utils/AppError';
+import { db } from '../../db/index.js';
+import { users } from '../../db/schema.js';
+import { AppError } from '../../utils/AppError.js';
 
 export class UsersRepository {
   // 1. Check if an email is already registered

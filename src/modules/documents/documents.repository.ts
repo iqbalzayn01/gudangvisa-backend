@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
-import { db } from '../../db';
-import { documents, trackingHistories } from '../../db/schema';
-import { AppError } from '../../utils/AppError';
+import { db } from '../../db/index.js';
+import { documents, trackingHistories } from '../../db/schema.js';
+import { AppError } from '../../utils/AppError.js';
 
 export class DocumentRepository {
   async createDocumentWithHistory(data: typeof documents.$inferInsert) {

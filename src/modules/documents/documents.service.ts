@@ -1,5 +1,5 @@
-import { DocumentRepository } from './documents.repository';
-import { AppError } from '../../utils/AppError';
+import { DocumentRepository } from './documents.repository.js';
+import { AppError } from '../../utils/AppError.js';
 
 export class DocumentService {
   private documentRepo = new DocumentRepository();

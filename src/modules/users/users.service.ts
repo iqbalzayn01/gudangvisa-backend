@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { UsersRepository } from './users.repository';
-import { AppError } from '../../utils/AppError';
+import { UsersRepository } from './users.repository.js';
+import { AppError } from '../../utils/AppError.js';
 
 export class UsersService {
   private repository = new UsersRepository();

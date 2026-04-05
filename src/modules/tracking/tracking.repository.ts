@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
-import { db } from '../../db';
-import { documents, trackingHistories } from '../../db/schema';
+import { db } from '../../db/index.js';
+import { documents, trackingHistories } from '../../db/schema.js';
 
 export class TrackingRepository {
   async findByTrackingCode(trackingCode: string) {

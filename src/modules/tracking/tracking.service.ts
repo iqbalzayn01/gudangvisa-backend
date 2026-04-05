@@ -1,4 +1,4 @@
-import { TrackingRepository } from './tracking.repository';
+import { TrackingRepository } from './tracking.repository.js';
 
 export class TrackingService {
   private repository = new TrackingRepository();

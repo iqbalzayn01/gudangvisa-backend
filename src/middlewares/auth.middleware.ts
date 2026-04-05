@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { jwtVerify } from 'jose';
-import { ENV } from '../config/env';
-import { AppError } from '../utils/AppError';
-import { JwtPayloadData } from '../types';
+import { ENV } from '../config/env.js';
+import { AppError } from '../utils/AppError.js';
+import { JwtPayloadData } from '../types/index.js';
 
 export const requireAuth = async (
   req: Request,

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { TrackingService } from './tracking.service';
-import { ApiResponse } from '../../types';
+import { TrackingService } from './tracking.service.js';
+import { ApiResponse } from '../../types/index.js';
 
 export class TrackingController {
   private service = new TrackingService();

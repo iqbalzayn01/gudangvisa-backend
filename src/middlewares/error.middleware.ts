@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../utils/AppError';
-import { ENV } from '../config/env';
+import { AppError } from '../utils/AppError.js';
+import { ENV } from '../config/env.js';
 
 export const globalErrorHandler = (
   err: Error | AppError,
