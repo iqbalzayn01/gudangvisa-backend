@@ -37,6 +37,8 @@ export const requireAuth = async (
     // 3. Attach the user data to the request object
     req.user = {
       id: decoded.id,
+      name: decoded.name,
+      email: decoded.email,
       role: decoded.role,
     };
 
