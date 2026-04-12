@@ -7,23 +7,14 @@ import documentRoutes from './modules/documents/documents.routes.js';
 import userRoutes from './modules/users/users.routes.js';
 import { globalErrorHandler } from './middlewares/error.middleware.js';
 import { AppError } from './utils/AppError.js';
-import path from 'path';
-import fs from 'fs';
 
 const app: Application = express();
 
-const uploadDir = path.join(process.cwd(), 'public/uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
 // Global Middlewares
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Static Files
-app.use('/uploads', express.static(uploadDir));
 
 // Base Route
 app.get('/', (_req: Request, res: Response) => {

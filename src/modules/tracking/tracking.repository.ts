@@ -17,7 +17,7 @@ export class TrackingRepository {
 
   async updateStatusWithLog(
     documentId: string,
-    status: any,
+    status: 'RECEIVED' | 'IN_REVIEW' | 'IN_PROCESS' | 'APPROVED' | 'REJECTED' | 'COMPLETED',
     notes: string,
     staffId: string,
   ) {

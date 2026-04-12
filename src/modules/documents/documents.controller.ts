@@ -5,16 +5,46 @@ import { ApiResponse } from '../../types/index.js';
 export class DocumentController {
   private documentService = new DocumentService();
 
+  /**
+   * Generate a signed upload URL for the client to upload a file directly to Supabase Storage.
+   * POST /api/v1/documents/upload-url
+   * Body: { fileName: string, contentType: string, fileSize?: number }
+   */
+  getUploadUrl = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { fileName, contentType, fileSize } = req.body;
+      const result = await this.documentService.generateUploadUrl(
+        fileName,
+        contentType,
+        fileSize,
+      );
+
+      const response: ApiResponse = {
+        success: true,
+        message: 'Signed upload URL generated successfully.',
+        data: result,
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Create a new document record after the file has been uploaded to storage.
+   * POST /api/v1/documents
+   * Body: { clientName: string, docType: string, storagePath?: string }
+   */
   createDocument = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const documentData = req.body;
+      const { clientName, docType, storagePath } = req.body;
       const staffId = req.user.id;
 
-      const fileUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
       const newDocument = await this.documentService.createNewDoc(
-        documentData,
+        { clientName, docType },
         staffId,
-        fileUrl,
+        storagePath,
       );
 
       const response: ApiResponse = {
@@ -29,6 +59,10 @@ export class DocumentController {
     }
   };
 
+  /**
+   * Track a document by its tracking code (public).
+   * GET /api/v1/documents/track/:trackingCode
+   */
   trackDocument = async (
     req: Request<{ trackingCode: string }>,
     res: Response,
@@ -44,6 +78,11 @@ export class DocumentController {
     }
   };
 
+  /**
+   * Update a document's status and add a tracking history entry.
+   * PATCH /api/v1/documents/:id/status
+   * Body: { status: string, notes: string }
+   */
   updateStatus = async (
     req: Request<{ id: string }>,
     res: Response,

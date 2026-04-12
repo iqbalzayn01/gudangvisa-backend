@@ -42,7 +42,7 @@ export class DocumentRepository {
 
   async updateStatusWithHistory(
     documentId: string,
-    status: any,
+    status: 'RECEIVED' | 'IN_REVIEW' | 'IN_PROCESS' | 'APPROVED' | 'REJECTED' | 'COMPLETED',
     notes: string,
     userId: string,
   ) {
