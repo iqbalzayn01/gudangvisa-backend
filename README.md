@@ -2,6 +2,44 @@
 
 A REST API for tracking VISA, KITAS, and PASSPORT documents. Staff and admins manage immigration documents, while clients can publicly track their application status using a tracking code.
 
+## Table of Contents
+
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+  - [Prerequisites](#1-prerequisites)
+  - [Clone the repository](#2-clone-the-repository)
+  - [Install dependencies](#3-install-dependencies)
+  - [Set up environment variables](#4-set-up-environment-variables)
+  - [Set up the database](#5-set-up-the-database)
+  - [Set up Supabase Storage](#6-set-up-supabase-storage)
+  - [Seed the admin account](#7-seed-the-admin-account)
+  - [Start the server](#8-start-the-server)
+- [Available Scripts](#available-scripts)
+- [Database Schema](#database-schema)
+  - [Users](#users)
+  - [Documents](#documents)
+  - [Tracking Histories](#tracking-histories)
+  - [Document Status Flow](#document-status-flow)
+- [Authentication](#authentication)
+- [API Reference](#api-reference)
+  - [Auth](#auth)
+  - [Users](#users-admin-only)
+  - [Documents](#documents-1)
+    - [How File Uploads Work](#how-file-uploads-work)
+    - [Get Upload URL](#post-apiv1documentsupload-url)
+    - [Upload the File](#step-2-upload-the-file)
+    - [Create Document](#post-apiv1documents)
+    - [Track Document](#get-apiv1documentstracktrackingcode)
+    - [Update Status](#patch-apiv1documentsidstatus)
+    - [Delete Document](#delete-apiv1documentsid)
+  - [Tracking](#tracking)
+- [All Endpoints Summary](#all-endpoints-summary)
+- [Error Handling](#error-handling)
+- [License](#license)
+
+---
+
 ## Tech Stack
 
 | Technology           | Purpose                         |
@@ -63,7 +101,7 @@ Make sure you have these installed:
 ### 2. Clone the repository
 
 ```bash
-git clone https://github.com/iqbalzayn01/gudangvisa-backend.git
+git clone https://github.com/iqbalzayn01/gudangvisa-backend.git gudangvisa-backend
 cd gudangvisa-backend
 ```
 
