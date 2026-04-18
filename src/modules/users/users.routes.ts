@@ -6,12 +6,13 @@ import { authorizeRoles } from '../../middlewares/role.middleware.js';
 const router = Router();
 const controller = new UsersController();
 
-// PROTECT ALL ROUTES: Only logged-in users with the 'ADMIN' role can access these routes!
 router.use(requireAuth);
+
+router.get('/me', authorizeRoles('ADMIN', 'STAFF'), controller.getMe);
+
+// PROTECT ALL ROUTES: Only logged-in users with the 'ADMIN' role can access these routes!
 router.use(authorizeRoles('ADMIN'));
 
-// Routes
-router.get('/me', controller.getMe);
 router.post('/', controller.createStaff);
 router.get('/', controller.getAllStaff);
 router.delete('/:id', controller.deleteStaff);
