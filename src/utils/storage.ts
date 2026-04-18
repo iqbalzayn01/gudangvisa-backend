@@ -32,10 +32,7 @@ export function validateFileMetadata(
   }
 
   if (fileSize !== undefined && fileSize > MAX_FILE_SIZE) {
-    throw new AppError(
-      400,
-      'File size exceeds the maximum limit of 2 MB.',
-    );
+    throw new AppError(400, 'File size exceeds the maximum limit of 2 MB.');
   }
 }
 
@@ -85,7 +82,7 @@ export async function verifyFileExists(storagePath: string) {
     );
   }
 
-  if (data.size > MAX_FILE_SIZE) {
+  if (data.size !== undefined && data.size > MAX_FILE_SIZE) {
     throw new AppError(400, 'Uploaded file exceeds the 2 MB limit.');
   }
 
