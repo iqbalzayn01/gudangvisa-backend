@@ -105,4 +105,28 @@ export class DocumentController {
       next(error);
     }
   };
+
+  /**
+   * Delete a document, its tracking histories, and its storage file.
+   * DELETE /api/v1/documents/:id
+   */
+  deleteDocument = async (
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const { id } = req.params;
+      await this.documentService.deleteDocument(id);
+
+      const response: ApiResponse = {
+        success: true,
+        message: 'Document deleted successfully.',
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

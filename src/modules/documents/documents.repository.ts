@@ -20,7 +20,7 @@ export class DocumentRepository {
       await tx.insert(trackingHistories).values({
         documentId: newDoc.id,
         status: 'RECEIVED',
-        notes: 'Dokumen diterima dan didaftarkan ke dalam sistem.',
+        notes: 'Document received and registered into the system.',
         changedBy: data.createdBy!,
       });
 
@@ -68,6 +68,31 @@ export class DocumentRepository {
       });
 
       return updatedDoc;
+    });
+  }
+
+  /**
+   * Delete a document and all its tracking histories.
+   * Returns the deleted document so the caller can clean up storage.
+   */
+  async deleteDocumentById(documentId: string) {
+    return await db.transaction(async (tx) => {
+      // Delete tracking histories first (FK constraint)
+      await tx
+        .delete(trackingHistories)
+        .where(eq(trackingHistories.documentId, documentId));
+
+      // Delete the document
+      const [deletedDoc] = await tx
+        .delete(documents)
+        .where(eq(documents.id, documentId))
+        .returning();
+
+      if (!deletedDoc) {
+        throw new AppError(404, 'Document not found or already deleted.');
+      }
+
+      return deletedDoc;
     });
   }
 }

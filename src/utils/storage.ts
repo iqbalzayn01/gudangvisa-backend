@@ -112,3 +112,24 @@ export async function createSignedDownloadUrl(
 
   return data.signedUrl;
 }
+
+/**
+ * Delete a file from Supabase Storage.
+ * Silently skips if no storage path is provided.
+ */
+export async function deleteStorageFile(
+  storagePath: string | null,
+): Promise<void> {
+  if (!storagePath) return;
+
+  const { error } = await supabase.storage
+    .from(BUCKET_NAME)
+    .remove([storagePath]);
+
+  if (error) {
+    throw new AppError(
+      500,
+      `Failed to delete file from storage: ${error.message}`,
+    );
+  }
+}

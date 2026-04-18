@@ -6,6 +6,7 @@ import {
   createSignedUploadUrl,
   verifyFileExists,
   createSignedDownloadUrl,
+  deleteStorageFile,
 } from '../../utils/storage.js';
 
 export class DocumentService {
@@ -74,7 +75,7 @@ export class DocumentService {
     if (!document) {
       throw new AppError(
         404,
-        'Dokumen tidak ditemukan. Periksa kembali nomor resi Anda.',
+        'Document not found. Please check your tracking code.',
       );
     }
 
@@ -102,5 +103,18 @@ export class DocumentService {
       notes,
       staffId,
     );
+  }
+
+  /**
+   * Delete a document, its tracking histories, and its storage file.
+   */
+  async deleteDocument(documentId: string) {
+    // Delete from DB first (returns the doc with fileUrl)
+    const deletedDoc = await this.documentRepo.deleteDocumentById(documentId);
+
+    // Clean up the file from Supabase Storage
+    await deleteStorageFile(deletedDoc.fileUrl);
+
+    return deletedDoc;
   }
 }

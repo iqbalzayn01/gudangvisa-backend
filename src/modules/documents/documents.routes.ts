@@ -33,4 +33,12 @@ router.patch(
   controller.updateStatus,
 );
 
+// 5. PROTECTED ROUTE: Only ADMIN can delete documents
+router.delete(
+  '/:id',
+  requireAuth,
+  authorizeRoles('ADMIN'),
+  controller.deleteDocument,
+);
+
 export default router;

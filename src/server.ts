@@ -17,7 +17,7 @@ const server = app.listen(ENV.PORT, () => {
 });
 
 process.on('unhandledRejection', (err: Error) => {
-  console.error('💥 UNHANDLED REJECTION! Melakukan graceful shutdown...');
+  console.error('💥 UNHANDLED REJECTION! Performing graceful shutdown...');
   console.error(err.name, err.message);
 
   server.close(() => {
