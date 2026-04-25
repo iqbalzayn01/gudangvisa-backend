@@ -28,6 +28,16 @@ export class DocumentRepository {
     });
   }
 
+  /**
+   * Get all documents sorted by newest first.
+   * Includes the creator's name but excludes full tracking histories.
+   */
+  async findAll() {
+    return await db.query.documents.findMany({
+      orderBy: (docs, { desc }) => [desc(docs.createdAt)],
+    });
+  }
+
   async findByTrackingCode(trackingCode: string) {
     return await db.query.documents.findFirst({
       where: eq(documents.trackingCode, trackingCode),

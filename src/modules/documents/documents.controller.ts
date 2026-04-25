@@ -32,6 +32,26 @@ export class DocumentController {
   };
 
   /**
+   * Get all documents sorted by newest first.
+   * GET /api/v1/documents
+   */
+  getAllDocuments = async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const allDocuments = await this.documentService.getAllDocuments();
+
+      const response: ApiResponse = {
+        success: true,
+        message: 'Documents retrieved successfully.',
+        data: allDocuments,
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
    * Create a new document record after the file has been uploaded to storage.
    * POST /api/v1/documents
    * Body: { clientName: string, docType: string, storagePath?: string }

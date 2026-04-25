@@ -38,6 +38,13 @@ export class DocumentService {
   }
 
   /**
+   * Get all documents sorted by newest first.
+   */
+  async getAllDocuments() {
+    return await this.documentRepo.findAll();
+  }
+
+  /**
    * Create a new document record.
    * If a storagePath is provided, verify the file exists in Supabase Storage first.
    */

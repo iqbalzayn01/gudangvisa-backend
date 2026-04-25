@@ -9,7 +9,15 @@ const controller = new DocumentController();
 // 1. PUBLIC ROUTE: Clients can track documents without logging in
 router.get('/track/:trackingCode', controller.trackDocument);
 
-// 2. PROTECTED ROUTE: Generate a signed upload URL for direct-to-storage upload
+// 2. PROTECTED ROUTE: Get all documents (for staff dashboard)
+router.get(
+  '/',
+  requireAuth,
+  authorizeRoles('STAFF', 'ADMIN'),
+  controller.getAllDocuments,
+);
+
+// 3. PROTECTED ROUTE: Generate a signed upload URL for direct-to-storage upload
 router.post(
   '/upload-url',
   requireAuth,
@@ -17,7 +25,7 @@ router.post(
   controller.getUploadUrl,
 );
 
-// 3. PROTECTED ROUTE: Create a new document (after file has been uploaded to storage)
+// 4. PROTECTED ROUTE: Create a new document (after file has been uploaded to storage)
 router.post(
   '/',
   requireAuth,
@@ -25,7 +33,7 @@ router.post(
   controller.createDocument,
 );
 
-// 4. PROTECTED ROUTE: Only STAFF and ADMIN can update document status
+// 5. PROTECTED ROUTE: Only STAFF and ADMIN can update document status
 router.patch(
   '/:id/status',
   requireAuth,
@@ -33,7 +41,7 @@ router.patch(
   controller.updateStatus,
 );
 
-// 5. PROTECTED ROUTE: Only ADMIN can delete documents
+// 6. PROTECTED ROUTE: Only ADMIN can delete documents
 router.delete(
   '/:id',
   requireAuth,

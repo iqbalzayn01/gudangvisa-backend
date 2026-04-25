@@ -26,6 +26,7 @@ A REST API for tracking VISA, KITAS, and PASSPORT documents. Staff and admins ma
   - [Auth](#auth)
   - [Users](#users-admin-only)
   - [Documents](#documents-1)
+    - [Get All Documents](#get-apiv1documents)
     - [How File Uploads Work](#how-file-uploads-work)
     - [Get Upload URL](#post-apiv1documentsupload-url)
     - [Upload the File](#step-2-upload-the-file)
@@ -442,6 +443,47 @@ Delete a user by their ID.
 
 ### Documents
 
+#### `GET /api/v1/documents`
+
+Get all documents sorted by newest first. **Staff and Admin only.**
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "message": "Documents retrieved successfully.",
+  "data": [
+    {
+      "id": "document-uuid",
+      "trackingCode": "GVI-1712345678",
+      "clientName": "John Doe",
+      "docType": "VISA",
+      "status": "IN_REVIEW",
+      "fileUrl": "documents/uuid/passport_scan.pdf",
+      "createdBy": "staff-uuid",
+      "createdAt": "...",
+      "updatedAt": "..."
+    },
+    {
+      "id": "document-uuid",
+      "trackingCode": "GVI-1712345679",
+      "clientName": "Jane Smith",
+      "docType": "KITAS",
+      "status": "RECEIVED",
+      "fileUrl": null,
+      "createdBy": "staff-uuid",
+      "createdAt": "...",
+      "updatedAt": "..."
+    }
+  ]
+}
+```
+
+---
+
 #### How File Uploads Work
 
 This API uses **Signed URLs** for file uploads. The file never passes through the API server — it goes directly from the client to Supabase Storage. This is faster, more secure, and more efficient.
@@ -761,13 +803,14 @@ Update a document's status via the tracking module.
 | 3   | `POST`   | `/api/v1/users`                 | Yes  | ADMIN         | Create staff           |
 | 4   | `GET`    | `/api/v1/users`                 | Yes  | ADMIN         | List all users         |
 | 5   | `DELETE` | `/api/v1/users/:id`             | Yes  | ADMIN         | Delete a user          |
-| 6   | `POST`   | `/api/v1/documents/upload-url`  | Yes  | STAFF, ADMIN  | Get signed upload URL  |
-| 7   | `POST`   | `/api/v1/documents`             | Yes  | STAFF, ADMIN  | Create a document      |
-| 8   | `GET`    | `/api/v1/documents/track/:code` | No   | —             | Track a document       |
-| 9   | `PATCH`  | `/api/v1/documents/:id/status`  | Yes  | STAFF, ADMIN  | Update document status |
-| 10  | `DELETE` | `/api/v1/documents/:id`         | Yes  | ADMIN         | Delete a document      |
-| 11  | `GET`    | `/api/v1/tracking/:code`        | No   | —             | Track a document       |
-| 12  | `PATCH`  | `/api/v1/tracking/:id/status`   | Yes  | Authenticated | Update document status |
+| 6   | `GET`    | `/api/v1/documents`             | Yes  | STAFF, ADMIN  | Get all documents      |
+| 7   | `POST`   | `/api/v1/documents/upload-url`  | Yes  | STAFF, ADMIN  | Get signed upload URL  |
+| 8   | `POST`   | `/api/v1/documents`             | Yes  | STAFF, ADMIN  | Create a document      |
+| 9   | `GET`    | `/api/v1/documents/track/:code` | No   | —             | Track a document       |
+| 10  | `PATCH`  | `/api/v1/documents/:id/status`  | Yes  | STAFF, ADMIN  | Update document status |
+| 11  | `DELETE` | `/api/v1/documents/:id`         | Yes  | ADMIN         | Delete a document      |
+| 12  | `GET`    | `/api/v1/tracking/:code`        | No   | —             | Track a document       |
+| 13  | `PATCH`  | `/api/v1/tracking/:id/status`   | Yes  | Authenticated | Update document status |
 
 ---
 
